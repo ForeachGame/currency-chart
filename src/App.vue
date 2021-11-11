@@ -1,32 +1,82 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <AppNavbar />
+        <AppFilter
+            @get-selected-currency="getSelectedCurrency"
+            @get-current-currency="getCurrentCurrency"
+            @get-date-from="getDateFrom"
+            @get-date-to="getDateTo"
+        />
+        <button
+            @click="getData"
+            v-show="selectedCurrency.length > 0"
+        >get</button>
+        <router-view
+            :selectedCurrency="selectedCurrency"
+            :data="data"
+        />
     </div>
-    <router-view/>
-  </div>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
+<script>
+import AppNavbar from "./components/AppNavbar";
+import AppFilter from "./components/AppFilter";
+import axios from "axios";
+export default {
+    data() {
+        return {
+            selectedCurrency: [],
+            date: {
+                from: '',
+                to: ''
+            },
+            currentCurrency: '',
+            data: {}
+
+        }
+    },
+    components: {
+        AppNavbar,
+        AppFilter
+    },
+    methods: {
+        getSelectedCurrency(selected) {
+            this.selectedCurrency = selected
+        },
+        getCurrentCurrency(current) {
+            this.currentCurrency = current
+        },
+        getDateFrom(date) {
+            this.date.from = date
+        },
+        getDateTo(date) {
+            this.date.to = date
+        },
+        getData() {
+            let params = {}
+            let url = 'https://api.frankfurter.app/';
+            let date = 'latest'
+
+            if(this.currentCurrency) {params = {from: this.currentCurrency, ...params}}
+            if(this.selectedCurrency) {params = {to: this.selectedCurrency.join(','), ...params}}
+            if(this.date.from.length > 0) {
+                if(this.date.from === this.date.to) {
+                    date = this.date.from
+                } else {
+                    date = this.date.from + '..' + this.date.to
+                }
+            }
+
+            axios
+                .get(url+date, {params})
+                .then(response => {
+                    this.data = response.data
+                })
+
+        }
+    }
+}
+</script>
