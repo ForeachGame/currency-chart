@@ -25,6 +25,7 @@
 import AppNavbar from "./components/AppNavbar";
 import AppFilter from "./components/AppFilter";
 import axios from "axios";
+
 export default {
     data() {
         return {

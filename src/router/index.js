@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 import All from "../views/All";
 import Table from "../views/Table";
 import Chart from "../views/Chart";
@@ -28,4 +28,4 @@ const router = new VueRouter({
     routes
 })
 
-export default router
+export default router;

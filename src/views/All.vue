@@ -14,6 +14,7 @@
 <script>
 import AppTable from "../components/table/AppTable";
 import AppChart from "../components/chart/AppChart";
+
 export default {
     name: "All",
     props: {

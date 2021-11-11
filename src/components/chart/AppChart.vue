@@ -5,11 +5,12 @@
 <script>
 import * as am4core from "@amcharts/amcharts4/core"
 import * as am4charts from "@amcharts/amcharts4/charts"
+
 export default {
     name: "AppChart",
     props: {
-        data:{},
-        selectedCurrency:[]
+        data: {},
+        selectedCurrency: []
     },
     data() {
         return {
@@ -17,7 +18,7 @@ export default {
         }
     },
     watch: {
-        data: function (newData){
+        data: function (newData) {
             this.showChart(newData)
         }
     },
@@ -34,7 +35,7 @@ export default {
                     const dateItem = data.rates[key]
                     obj = {
                         ...obj,
-                        [e]:dateItem[e]
+                        [e]: dateItem[e]
                     }
                 })
                 value.push(obj)
@@ -49,6 +50,7 @@ export default {
 
             let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
             console.log(valueAxis)
+
             function createSeries(field, name) {
                 let series = chart.series.push(new am4charts.LineSeries());
                 series.dataFields.valueY = field;
@@ -66,7 +68,7 @@ export default {
                 return series;
             }
 
-            this.selectedCurrency.forEach( e => {
+            this.selectedCurrency.forEach(e => {
                 createSeries(e, e);
             })
 

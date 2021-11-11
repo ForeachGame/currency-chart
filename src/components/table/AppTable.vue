@@ -18,7 +18,7 @@ export default {
         }
     },
     watch: {
-        data: function (newData){
+        data: function (newData) {
             for (let key in newData.rates) {
                 let obj = {
                     'Date': key,
@@ -27,7 +27,7 @@ export default {
                     const dateItem = newData.rates[key]
                     obj = {
                         ...obj,
-                        [e]:dateItem[e]
+                        [e]: dateItem[e]
                     }
                 })
                 this.items.push(obj)
