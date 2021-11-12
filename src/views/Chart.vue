@@ -1,9 +1,6 @@
 <template>
     <div>
-        <AppChart
-            :data="data"
-            :selectedCurrency="selectedCurrency"
-        />
+        <AppChart />
     </div>
 </template>
 
@@ -12,10 +9,6 @@ import AppChart from "../components/chart/AppChart";
 
 export default {
     name: "Chart",
-    props: {
-        selectedCurrency: [],
-        data: {}
-    },
     components: {
         AppChart
     }

@@ -5,51 +5,28 @@
 <script>
 import * as am4core from "@amcharts/amcharts4/core"
 import * as am4charts from "@amcharts/amcharts4/charts"
+import {mapGetters} from "vuex";
 
 export default {
     name: "AppChart",
-    props: {
-        data: {},
-        selectedCurrency: []
-    },
-    data() {
-        return {
-            chart: ''
-        }
-    },
     watch: {
-        data: function (newData) {
+        getData: function (newData) {
             this.showChart(newData)
         }
     },
+    computed: mapGetters(['getData']),
     methods: {
         showChart(data) {
             let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
-            let value = [];
 
-            for (let key in data.rates) {
-                let obj = {
-                    'date': new Date(key)
-                }
-                this.selectedCurrency.forEach(e => {
-                    const dateItem = data.rates[key]
-                    obj = {
-                        ...obj,
-                        [e]: dateItem[e]
-                    }
-                })
-                value.push(obj)
-            }
-
-            chart.data = value;
+            chart.data = data;
 
 
             let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
             dateAxis.renderer.grid.template.location = 0;
             dateAxis.renderer.minGridDistance = 30;
 
-            let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-            console.log(valueAxis)
+            chart.yAxes.push(new am4charts.ValueAxis());
 
             function createSeries(field, name) {
                 let series = chart.series.push(new am4charts.LineSeries());
@@ -68,7 +45,7 @@ export default {
                 return series;
             }
 
-            this.selectedCurrency.forEach(e => {
+            this.$store.state.filter.selected.forEach(e => {
                 createSeries(e, e);
             })
 
@@ -77,6 +54,9 @@ export default {
 
             this.chart = chart;
         }
+    },
+    mounted() {
+        this.getData.length > 0 && this.showChart(this.getData)
     },
     beforeDestroy() {
         if (this.chart) {
@@ -89,6 +69,6 @@ export default {
 <style>
 #chartdiv {
     width: 100%;
-    height: 500px;
+    height: 400px;
 }
 </style>

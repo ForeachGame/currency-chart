@@ -2,14 +2,14 @@
     <div>
         <b-table
             id="currency-table"
-            :items="items"
+            :items="getData"
             :per-page="perPage"
             :current-page="currentPage"
             striped
             hover
             ></b-table>
         <b-pagination
-            v-show="items.length > 0"
+            v-show="getData.length > 0"
             v-model="currentPage"
             :total-rows="rows"
             :per-page="perPage"
@@ -20,41 +20,22 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
     name: "AppTable",
-    props: {
-        data: {},
-        selectedCurrency: []
-    },
     data() {
         return {
-            perPage: 10,
+            perPage: 7,
             currentPage: 1,
-            items: []
         }
     },
     computed: {
+        ...mapGetters(['getData']),
         rows() {
-            return this.items.length
+            return this.getData.length
         }
     },
-    watch: {
-        data: function (newData) {
-            for (let key in newData.rates) {
-                let obj = {
-                    'Date': key,
-                }
-                this.selectedCurrency.forEach(e => {
-                    const dateItem = newData.rates[key]
-                    obj = {
-                        ...obj,
-                        [e]: dateItem[e]
-                    }
-                })
-                this.items.push(obj)
-            }
-        }
-    }
 }
 </script>
 

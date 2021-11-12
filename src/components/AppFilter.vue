@@ -9,24 +9,22 @@
                 is-nav
             >
                 <b-dropdown
-                    v-on="{show: options.length < 1 ? getCurrency : ()=>{}}"
                     block
                     variant="primary"
-                    :text="currentCurrencyDropdownText"
+                    :text="getCurrentCurrencyDropdownText"
                     class="m-2 filter-dropdown">
                     <b-dropdown-item
-                        v-for="option in options"
+                        v-for="option in getCurrency"
                         :key="option.code"
-                        @click="currentCurrency = option.code"
+                        @click="changeCurrentCurrency(option.code)"
                     >
                         {{ option.name }}
                     </b-dropdown-item>
                 </b-dropdown>
                 <b-dropdown
-                    v-on="{show: options.length < 1 ? getCurrency : ()=>{}}"
                     block
                     variant="primary"
-                    :text="selectedDropdownText"
+                    :text="getSelectedDropdownText"
                     class="m-2 filter-dropdown"
                 >
 
@@ -40,7 +38,7 @@
                                 name="flavour-2"
                             >
                                 <b-form-checkbox
-                                    v-for="option in options"
+                                    v-for="option in getCurrency"
                                     :key="option.code"
                                     :value="option.code"
                                     name="flavour-3a"
@@ -54,19 +52,19 @@
                 </b-dropdown>
                 <b-form-datepicker
                     id="filter__date-from"
-                    v-model="date.from"
+                    v-model="dateFrom"
                     class="m-2 currency__datepicker"
                     :date-disabled-fn="dateFormDisabled"
                 ></b-form-datepicker>
                 <b-form-datepicker
                     id="filter__date-to"
-                    v-model="date.to"
+                    v-model="dateTo"
                     class="m-2 currency__datepicker"
                     :date-disabled-fn="dateToDisabled"
                 ></b-form-datepicker>
                 <b-button
-                    @click="$emit('get-data')"
-                    :disabled="selected.length < 1"
+                    @click="fetchData"
+                    :disabled="getSelected < 1"
                     variant="success"
                 >Получить данные</b-button>
             </b-collapse>
@@ -75,71 +73,71 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     name: "AppFilter",
-    data() {
-        return {
-            currentCurrency: '',
-            selected: [],
-            options: [],
-            date: {
-                from: '',
-                to:''
+    computed: {
+        ...mapGetters([
+            'getCurrency',
+            'getCurrentCurrency',
+            'getDateFrom',
+            'getDateTo',
+            'getSelected',
+            'getCurrentCurrencyDropdownText',
+            'getSelectedDropdownText',
+
+        ]),
+        selected: {
+            get () {
+                return this.$store.state.filter.selected
+            },
+            set (value) {
+                this.$store.commit('updateSelected', value)
+                this.$store.commit('updateSelectedDropdownText', value)
+            }
+        },
+        dateFrom: {
+            get() {
+                return this.$store.state.filter.date.from
+            },
+            set(value) {
+                this.$store.commit('updateDateFrom', value)
+            }
+        },
+        dateTo: {
+            get() {
+                return this.$store.state.filter.date.to
+            },
+            set(value) {
+                this.$store.commit('updateDateTo', value)
             }
         }
     },
-    computed: {
-        currentCurrencyDropdownText() {
-            return this.currentCurrency.length > 0 ? this.currentCurrency : 'Основная валюта'
-        },
-        selectedDropdownText() {
-            return this.selected.length > 0 ? this.selected.join(', ') : 'Валюты для фильтра'
-        }
-    },
-    watch: {
-        selected: function (newSelected) {
-            this.$emit('get-selected-currency', newSelected)
-        },
-        currentCurrency: function (newValue) {
-            this.$emit('get-current-currency', newValue)
-        },
-        'date.from': function (newDate) {
-            this.$emit('get-date-from', newDate)
-        },
-        'date.to': function (newDate) {
-            this.$emit('get-date-to', newDate)
-        }
-    },
     methods: {
-        getCurrency() {
-            axios
-                .get('https://api.frankfurter.app/currencies')
-                .then(response => {
-                    for (let key in response.data) {
-                        this.options.push({
-                            code: key,
-                            name: response.data[key]
-                        })
-                    }
-                    this.$emit('get-selected-currency', this.selected)
-                })
-        },
+        ...mapActions([
+            'fetchCurrencies',
+            'fetchData',
+            'changeCurrentCurrency',
+        ]),
         dateFormDisabled(ymd, date) {
             const now = new Date()
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-            const dateTo = new Date(this.date.to)
+            const dateTo = new Date(this.dateTo)
             return date > today || date > dateTo
         },
         dateToDisabled(ymd, date) {
             const now = new Date()
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-            const dateForm = new Date(this.date.from)
+            const dateForm = new Date(this.dateFrom)
             return date > today || date <= dateForm
 
         }
+    },
+    async mounted() {
+        this.fetchCurrencies();
     }
+
 }
 </script>
 
