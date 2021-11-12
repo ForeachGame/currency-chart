@@ -7,7 +7,7 @@
             :current-page="currentPage"
             striped
             hover
-            ></b-table>
+        ></b-table>
         <b-pagination
             v-show="getData.length > 0"
             v-model="currentPage"
@@ -28,15 +28,15 @@ export default {
         return {
             perPage: 7,
             currentPage: 1,
-        }
+        };
     },
     computed: {
-        ...mapGetters(['getData']),
+        ...mapGetters(["getData"]),
         rows() {
-            return this.getData.length
+            return this.getData.length;
         }
     },
-}
+};
 </script>
 
 <style scoped>

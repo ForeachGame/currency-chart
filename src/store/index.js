@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import currency from "./modules/currency";
 import filter from "./modules/filter";
 

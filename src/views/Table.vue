@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AppTable />
+        <AppTable/>
     </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
     components: {
         AppTable
     }
-}
+};
 </script>
 
 <style scoped>

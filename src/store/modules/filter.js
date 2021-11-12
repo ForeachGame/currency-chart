@@ -1,62 +1,62 @@
 export default {
     state: {
-        currentCurrency: '',
+        currentCurrency: "",
         selected: [],
         date: {
-            from: '',
-            to: ''
+            from: "",
+            to: ""
         },
-        currentCurrencyDropdownText: 'Основная валюта',
-        selectedDropdownText: 'Валюты для фильтра',
+        currentCurrencyDropdownText: "Основная валюта",
+        selectedDropdownText: "Валюты для фильтра",
     },
     mutations: {
         updateCurrentCurrency(state, currentCurrency) {
-            state.currentCurrency = currentCurrency
+            state.currentCurrency = currentCurrency;
         },
         updateDateFrom(state, dateFrom) {
-            state.date.from = dateFrom
+            state.date.from = dateFrom;
         },
         updateDateTo(state, dateTo) {
-            state.date.to = dateTo
+            state.date.to = dateTo;
         },
         updateSelected(state, selected) {
-            state.selected = selected
+            state.selected = selected;
         },
         updateCurrentCurrencyDropdownText(state, value) {
             state.currentCurrencyDropdownText = value.length > 0
-                                                    ? value
-                                                    : 'Основная валюта'
+                ? value
+                : "Основная валюта";
         },
         updateSelectedDropdownText(state, value) {
             state.selectedDropdownText = value.length > 0
-                                            ? value.join(', ')
-                                            : 'Валюты для фильтра'
+                ? value.join(", ")
+                : "Валюты для фильтра";
         }
     },
     actions: {
         changeCurrentCurrency({commit}, value) {
-            commit('updateCurrentCurrency', value)
-            commit('updateCurrentCurrencyDropdownText', value)
+            commit("updateCurrentCurrency", value);
+            commit("updateCurrentCurrencyDropdownText", value);
         },
     },
     getters: {
         getCurrentCurrency(state) {
-            return state.currentCurrency
+            return state.currentCurrency;
         },
         getDateFrom(state) {
-            return state.date.from
+            return state.date.from;
         },
         getDateTo(state) {
-            return state.date.to
+            return state.date.to;
         },
         getSelected(state) {
-            return state.selected
+            return state.selected;
         },
         getCurrentCurrencyDropdownText(state) {
-            return state.currentCurrencyDropdownText
+            return state.currentCurrencyDropdownText;
         },
         getSelectedDropdownText(state) {
-            return state.selectedDropdownText
+            return state.selectedDropdownText;
         }
     }
-}
+};

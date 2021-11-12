@@ -1,7 +1,7 @@
 <template>
     <div>
-        <AppChart />
-        <AppTable />
+        <AppChart/>
+        <AppTable/>
     </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
         AppTable,
         AppChart
     }
-}
+};
 </script>
 
 <style scoped>

@@ -3,18 +3,18 @@
 </template>
 
 <script>
-import * as am4core from "@amcharts/amcharts4/core"
-import * as am4charts from "@amcharts/amcharts4/charts"
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
 import {mapGetters} from "vuex";
 
 export default {
     name: "AppChart",
     watch: {
         getData: function (newData) {
-            this.showChart(newData)
+            this.showChart(newData);
         }
     },
-    computed: mapGetters(['getData']),
+    computed: mapGetters(["getData"]),
     methods: {
         showChart(data) {
             let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
@@ -47,7 +47,7 @@ export default {
 
             this.$store.state.filter.selected.forEach(e => {
                 createSeries(e, e);
-            })
+            });
 
             chart.legend = new am4charts.Legend();
             chart.cursor = new am4charts.XYCursor();
@@ -56,14 +56,14 @@ export default {
         }
     },
     mounted() {
-        this.getData.length > 0 && this.showChart(this.getData)
+        this.getData.length > 0 && this.showChart(this.getData);
     },
     beforeDestroy() {
         if (this.chart) {
             this.chart.dispose();
         }
     }
-}
+};
 </script>
 
 <style>
