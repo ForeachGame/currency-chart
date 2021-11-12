@@ -6,11 +6,8 @@
             @get-current-currency="getCurrentCurrency"
             @get-date-from="getDateFrom"
             @get-date-to="getDateTo"
+            @get-data="getData"
         />
-        <button
-            @click="getData"
-            v-show="selectedCurrency.length > 0"
-        >get</button>
         <router-view
             :selectedCurrency="selectedCurrency"
             :data="data"

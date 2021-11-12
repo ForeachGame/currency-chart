@@ -1,6 +1,9 @@
 <template>
     <div>
-        <AppTable/>
+        <AppTable
+            :data="data"
+            :selectedCurrency="selectedCurrency"
+        />
     </div>
 </template>
 
@@ -9,6 +12,10 @@ import AppTable from "../components/table/AppTable";
 
 export default {
     name: "Table",
+    props: {
+        selectedCurrency: [],
+        data: {}
+    },
     components: {
         AppTable
     }

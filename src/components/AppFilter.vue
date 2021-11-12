@@ -1,51 +1,76 @@
 <template>
     <div>
-        <div>
-            <b-dropdown
-                v-on="{show: options.length < 1 ? getCurrency : ()=>{}}"
-                block
-                :text="currentCurrencyDropdownText"
-                class="filter-dropdown">
-                <b-dropdown-item
-                    v-for="option in options"
-                    :key="option.code"
-                    @click="currentCurrency = option.code"
-                >
-                    {{ option.name }}
-                </b-dropdown-item>
-            </b-dropdown>
-            <b-dropdown
-                v-on="{show: options.length < 1 ? getCurrency : ()=>{}}"
-                block
-                :text="selectedDropdownText"
-                class="m-2"
-                menu-class="w-200"
+        <b-navbar
+            toggleable="lg"
+            type="dark"
+            variant="info">
+            <b-collapse
+                class="flex-xl-row justify-content-center"
+                is-nav
             >
-                <b-dropdown-form>
-                    <b-form-checkbox
+                <b-dropdown
+                    v-on="{show: options.length < 1 ? getCurrency : ()=>{}}"
+                    block
+                    variant="primary"
+                    :text="currentCurrencyDropdownText"
+                    class="m-2 filter-dropdown">
+                    <b-dropdown-item
                         v-for="option in options"
-                        v-model="selected"
                         :key="option.code"
-                        :value="option.code"
-                        name="flavour-3a"
+                        @click="currentCurrency = option.code"
                     >
                         {{ option.name }}
-                    </b-form-checkbox>
-                </b-dropdown-form>
-            </b-dropdown>
-            <b-form-datepicker
-                id="filter__date-from"
-                v-model="date.from"
-                class="mb-2"
-                :date-disabled-fn="dateFormDisabled"
-            ></b-form-datepicker>
-            <b-form-datepicker
-                id="filter__date-to"
-                v-model="date.to"
-                class="mb-2"
-                :date-disabled-fn="dateToDisabled"
-            ></b-form-datepicker>
-        </div>
+                    </b-dropdown-item>
+                </b-dropdown>
+                <b-dropdown
+                    v-on="{show: options.length < 1 ? getCurrency : ()=>{}}"
+                    block
+                    variant="primary"
+                    :text="selectedDropdownText"
+                    class="m-2 filter-dropdown"
+                >
+
+                        <b-form-group
+
+                            class="p-2"
+                        >
+                            <b-form-checkbox-group
+                                id="checkbox-group-2"
+                                v-model="selected"
+                                name="flavour-2"
+                            >
+                                <b-form-checkbox
+                                    v-for="option in options"
+                                    :key="option.code"
+                                    :value="option.code"
+                                    name="flavour-3a"
+                                    size="sm"
+                                >
+                                    {{ option.name }}
+                                </b-form-checkbox>
+                            </b-form-checkbox-group>
+                        </b-form-group>
+
+                </b-dropdown>
+                <b-form-datepicker
+                    id="filter__date-from"
+                    v-model="date.from"
+                    class="m-2 currency__datepicker"
+                    :date-disabled-fn="dateFormDisabled"
+                ></b-form-datepicker>
+                <b-form-datepicker
+                    id="filter__date-to"
+                    v-model="date.to"
+                    class="m-2 currency__datepicker"
+                    :date-disabled-fn="dateToDisabled"
+                ></b-form-datepicker>
+                <b-button
+                    @click="$emit('get-data')"
+                    :disabled="selected.length < 1"
+                    variant="success"
+                >Получить данные</b-button>
+            </b-collapse>
+        </b-navbar>
     </div>
 </template>
 
@@ -119,14 +144,24 @@ export default {
 </script>
 
 <style lang="scss">
-.b-dropdown-form {
-    max-height: 200px;
-    overflow-y: scroll;
+.form-group {
+    white-space: nowrap;
+    input {
+        margin-right: 5px;
+    }
 }
 .filter-dropdown {
+    & > button {
+        width: 200px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
     .dropdown-menu {
         max-height: 200px;
         overflow-y: scroll;
     }
+}
+.currency__datepicker {
+    max-width: 350px;
 }
 </style>

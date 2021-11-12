@@ -1,6 +1,20 @@
 <template>
     <div>
-        <b-table striped hover :items="items"></b-table>
+        <b-table
+            id="currency-table"
+            :items="items"
+            :per-page="perPage"
+            :current-page="currentPage"
+            striped
+            hover
+            ></b-table>
+        <b-pagination
+            v-show="items.length > 0"
+            v-model="currentPage"
+            :total-rows="rows"
+            :per-page="perPage"
+            aria-controls="currency-table"
+        ></b-pagination>
     </div>
 
 </template>
@@ -14,7 +28,14 @@ export default {
     },
     data() {
         return {
+            perPage: 10,
+            currentPage: 1,
             items: []
+        }
+    },
+    computed: {
+        rows() {
+            return this.items.length
         }
     },
     watch: {
